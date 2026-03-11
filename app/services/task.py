@@ -21,26 +21,18 @@ async def get_task(
 
     return result.scalar_one_or_none()
 
-async def create_task(
-        db : AsyncSession,
-        data : TaskCreate,
-        project_id : int,
-) -> Task:
-    task = Task(**data.model_dump(), project_id=project_id)
+async def create_task(db: AsyncSession, task_data: dict, project_id: int):
+    task_data["project_id"] = project_id
+    task = Task(**task_data)
     db.add(task)
-    await db.flush()
+    await db.commit()
     await db.refresh(task)
     return task
 
-async def update_task(
-        db : AsyncSession,
-        task : Task,
-        data : TaskUpdate,
-) -> Task:
-    for field, value in data.model_dump(exclude_unset=True).items():
+async def update_task(db: AsyncSession, task: Task, update_data: dict):
+    for field, value in update_data.items():
         setattr(task, field, value)
-    
-    await db.flush()
+    await db.commit()
     await db.refresh(task)
     return task
 
