@@ -41,3 +41,6 @@ async def update_project(
     await db.flush()
     await db.refresh(project)
     return project
+
+async def delete_project(db: AsyncSession, project: Project) -> None:
+    await db.delete(project)
