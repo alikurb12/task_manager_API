@@ -28,5 +28,5 @@ class Task(Base):
     project_id = Column(Integer, ForeignKey("projects.id"), nullable=False)
     assignee_id = Column(Integer, ForeignKey("users.id"), nullable=True)
 
-    projects = relationship("Project", back_populates="tasks")
+    project = relationship("Project", back_populates="tasks")
     assignee =relationship("User", back_populates="tasks")

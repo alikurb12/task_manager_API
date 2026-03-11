@@ -21,3 +21,21 @@ async def register(
             detail="Email is already registered",
         )
     return await create_user(db, data)
+
+@router.post("/login", response_model=Token)
+async def login(
+    data : UserLogin,
+    db : AsyncSession = Depends(get_db),    
+):
+    user = await authenticate_user(db, data.email, data.password)
+    if not user:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Invalid email or password",
+        )
+    token = create_access_token(data={"sub" : str(user.id)})
+    return Token(access_token=token)
+
+@router.get("/me", response_model=UserRead)
+async def get_me(current_user: User = Depends(get_current_user)):
+    return current_user

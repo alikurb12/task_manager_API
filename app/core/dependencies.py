@@ -9,10 +9,10 @@ from app.services.auth import get_user_by_id
 bearer_scheme = HTTPBearer()
 
 async def get_current_user(
-        cerdentials : HTTPAuthorizationCredentials = Depends(bearer_scheme),
+        credentials : HTTPAuthorizationCredentials = Depends(bearer_scheme),
         db : AsyncSession = Depends(get_db),
 ) -> User:
-    payload = decode_token(cerdentials.cerdentials)
+    payload = decode_token(credentials.credentials)
     
     if payload is None:
         raise HTTPException(
