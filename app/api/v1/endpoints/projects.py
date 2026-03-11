@@ -37,7 +37,7 @@ async def get_project(
         )
     return project
 
-@router.put("/{project_id}", response_class=ProjectRead)
+@router.put("/{project_id}", response_model=ProjectRead)
 async def update_project(
     project_id : int,
     data : ProjectUpdate,

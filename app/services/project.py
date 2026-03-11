@@ -16,7 +16,7 @@ async def get_project(
         owner_id : int,
 ) -> Project | None:
     result = await db.execute(
-        select(Project).where(Project.id == id, Project.owner_id == owner_id)
+        select(Project).where(Project.id == project_id, Project.owner_id == owner_id)
     )
     return result.scalar_one_or_none()
 
